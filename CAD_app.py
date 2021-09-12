@@ -6,12 +6,7 @@ st.set_page_config(layout="wide")
 import pandas as pd
 import pickle
 import numpy as np
-from sklearn.metrics import accuracy_score, f1_score, roc_auc_score, confusion_matrix,log_loss,plot_confusion_matrix
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
 from sklearn import metrics
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 #model
 import xgboost as xgb
