@@ -6,7 +6,12 @@ st.set_page_config(layout="wide")
 import pandas as pd
 import pickle
 import numpy as np
+from sklearn.metrics import accuracy_score, f1_score, roc_auc_score, confusion_matrix,log_loss,plot_confusion_matrix
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 from sklearn import metrics
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 #model
 import xgboost as xgb
@@ -135,7 +140,7 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                                         '(41412) Phình mạch vành',
                                         '(4142) Tắc hoàn toàn mãn tính của động mạch vành',
                                         '(4148) Các dạng bệnh tim thiếu máu cục bộ mạn tính được chỉ định khác'])
-
+#***undercontruct
 
 
             with st.container():
@@ -166,7 +171,7 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                                                '(8855) Chụp động mạch vành bằng một ống thông duy nhất',
                                                '(8856) Chụp động mạch vành bằng hai ống thông',
                                                ])
-
+#****undercontruct
                 PROCE_51, PROCE_54, PROCE_66, PROCE_3603, PROCE_3606, PROCE_3607, PROCE_3611, PROCE_3612, PROCE_3613, PROCE_3722, PROCE_3614, PROCE_3615, PROCE_3616, PROCE_3617, PROCE_3721, PROCE_3723, PROCE_3768, PROCE_3778, PROCE_3795, PROCE_3796, PROCE_3797, PROCE_3798, PROCE_3964, PROCE_8855, PROCE_8856 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                 if option_pro == '(51) Cấy máy khử rung tim tái đồng bộ, hệ thống tổng thể [CRT-D]': #1
                     PROCE_51 = 1
@@ -315,6 +320,145 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                 first_icu_stay_demo = 0
                 seq_num = 0
                 DIAG_4111, DIAG_4139, DIAG_4142, DIAG_4148, DIAG_41001, DIAG_41011, DIAG_41021, DIAG_41031, DIAG_41041, DIAG_41071, DIAG_41072, DIAG_41081,DIAG_41091, DIAG_41189, DIAG_41400, DIAG_41401, DIAG_41402,DIAG_41412 = 0, 0, 0, 0, 0, 0, 0, 0, 0,0 ,0,0,0,0,0,0,0,0
+#DRUGS USED OR USING
+            with st.container():
+                st.header('_Thuốc bệnh nhân đã và đang sử dụng_')
+
+                plate, coagu, fibrin, lipid = st.columns([1, 1, 1, 1])
+                plate.subheader('Chống kết tập tiểu cầu')
+                coagu.subheader('Chống đông máu')
+                lipid.subheader('Trị lipid huyết')
+                fibrin.subheader('Li giải fibrin')
+                #DRUG_B01AA03, DRUG_B01AB01, DRUG_B01AB05, DRUG_B01AC04, DRUG_B01AC06, DRUG_B01AC16, DRUG_B01AC22, DRUG_B01AD02, DRUG_B01AE03, DRUG_B01AE06, DRUG_C01DA02, DRUG_C01DA08, DRUG_C01DA14, DRUG_C01EB18, DRUG_C07AB02, DRUG_C07AB09, DRUG_C07AG01, DRUG_C07AG02, DRUG_C07CB02, DRUG_C08CA01, DRUG_C08CA04, DRUG_C08DA01, DRUG_C08DB01, DRUG_C09AA01, DRUG_C09AA03, DRUG_C09AA05, DRUG_C09AA13, DRUG_C09BA02, DRUG_C10AA01, DRUG_C10AA03, DRUG_C10AA05, DRUG_C10AA07, DRUG_C10AB04, DRUG_C10AD02, DRUG_C10AX06, DRUG_C10AX09, DRUG_N02BE51 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+                #def true_check(self):
+                #    self = 0 if self == False else 1
+
+                    # Part1
+                DRUG_B01AC06 = plate.checkbox('Aspirin')
+                DRUG_B01AC06 = 0 if DRUG_B01AC06 == False else 1
+
+                DRUG_B01AC04 = plate.checkbox('Clopidogrel')
+                DRUG_B01AC04 = 0 if DRUG_B01AC04 == False else 1
+
+                DRUG_B01AC16 = plate.checkbox('Eptifibatide')
+                DRUG_B01AC16 = 0 if DRUG_B01AC16 == False else 1
+
+                DRUG_B01AC22 = plate.checkbox('Prasugrel')
+                DRUG_B01AC22 = 0 if DRUG_B01AC22 == False else 1
+
+                DRUG_N02BE51 = plate.checkbox('Excedrin')
+                DRUG_N02BE51 = 0 if DRUG_N02BE51 == False else 1
+
+                DRUG_B01AB01 = coagu.checkbox('Heparin')
+                DRUG_B01AB01 = 0 if DRUG_B01AB01 == False else 1
+
+                DRUG_B01AB05 = coagu.checkbox('Enoxaheparin')
+                DRUG_B01AB05 = 0 if DRUG_B01AB05 == False else 1
+
+                DRUG_B01AA03 = coagu.checkbox('Warfarin')
+                DRUG_B01AA03 = 0 if DRUG_B01AA03 == False else 1
+
+                DRUG_B01AE03 = coagu.checkbox('Argatroban')
+                DRUG_B01AE03 = 0 if DRUG_B01AE03 == False else 1
+
+                DRUG_B01AE06 = coagu.checkbox('Bivalirudin')
+                DRUG_B01AE06 = 0 if DRUG_B01AE06 == False else 1
+
+
+
+                strep = fibrin.checkbox('Streptokinase')
+                DRUG_B01AD02 = fibrin.checkbox("Alteplase")
+                DRUG_B01AD02 = 0 if DRUG_B01AD02 == False else 1
+
+                DRUG_C01DA02 = lipid.checkbox('Nitroglycerin')
+                DRUG_C01DA02 = 0 if DRUG_C01DA02 == False else 1
+
+                DRUG_C01DA08 = lipid.checkbox('Isosorbide')
+                DRUG_C01DA08 = 0 if DRUG_C01DA08 == False else 1
+
+                DRUG_C01DA14 = lipid.checkbox('Isosorbide Dinitrate')
+                DRUG_C01DA14 = 0 if DRUG_C01DA14 == False else 1
+
+                DRUG_C10AA01 = lipid.checkbox('Simvastatin')
+                DRUG_C10AA01 = 0 if DRUG_C10AA01 == False else 1
+
+                DRUG_C10AA03 = lipid.checkbox('Pravastatin')
+                DRUG_C10AA03 = 0 if DRUG_C10AA03 == False else 1
+
+                DRUG_C10AA05 = lipid.checkbox('Atorvastatin')
+                DRUG_C10AA05 = 0 if DRUG_C10AA05 == False else 1
+
+                DRUG_C10AA07 = lipid.checkbox('Rosuvastatin')
+                DRUG_C10AA07 = 0 if DRUG_C10AA07 == False else 1
+
+                DRUG_C10AB04 = lipid.checkbox('Gemfibrozil')
+                DRUG_C10AB04 = 0 if DRUG_C10AB04 == False else 1
+
+                DRUG_C10AD02 = lipid.checkbox('Niacin')
+                DRUG_C10AD02 = 0 if DRUG_C10AD02 == False else 1
+
+                DRUG_C10AX06 = lipid.checkbox('Dầu cá (Omega 3)')
+                DRUG_C10AX06 = 0 if DRUG_C10AX06 == False else 1
+
+                DRUG_C10AX09 = lipid.checkbox('Ezetimibe')
+                DRUG_C10AX09 = 0 if DRUG_C10AX09 == False else 1
+
+
+                beta, acei, calci, natri = st.columns([1, 1, 1, 1])
+                natri.subheader('Chẹn kênh Natri')
+                beta.subheader('Chẹn Beta')
+                calci.subheader('Chẹn kênh Calci')
+                acei.subheader('Ức chế men chuyển')
+
+                DRUG_C01EB18 = natri.checkbox('Ranolazine')
+                DRUG_C01EB18 = 0 if DRUG_C01EB18 == False else 1
+
+
+                DRUG_C07AB02 = beta.checkbox('Metoprolol')
+                DRUG_C07AB02 = 0 if DRUG_C07AB02 == False else 1
+
+                DRUG_C07AB09 = beta.checkbox('Esmolol')
+                DRUG_C07AB09 = 0 if DRUG_C07AB09 == False else 1
+
+                DRUG_C07AG01 = beta.checkbox('Labetalol')
+                DRUG_C07AG01 = 0 if DRUG_C07AG01 == False else 1
+
+                DRUG_C07AG02 = beta.checkbox('Carvedilol')
+                DRUG_C07AG02 = 0 if DRUG_C07AG02 == False else 1
+
+                DRUG_C07CB02 = beta.checkbox('Atenolol')
+                DRUG_C07CB02 = 0 if DRUG_C07CB02 == False else 1
+
+
+                DRUG_C08CA01 = calci.checkbox('Amlodipine')
+                DRUG_C08CA01 = 0 if DRUG_C08CA01 == False else 1
+
+                DRUG_C08CA04 = calci.checkbox('Nicardipine')
+                DRUG_C08CA04 = 0 if DRUG_C08CA04 == False else 1
+
+                DRUG_C08DA01 = calci.checkbox('Verapamil')
+                DRUG_C08DA01 = 0 if DRUG_C08DA01 == False else 1
+
+                DRUG_C08DB01 = calci.checkbox('Diltiazem')
+                DRUG_C08DB01 = 0 if DRUG_C08DB01 == False else 1
+
+
+                DRUG_C09AA01 = acei.checkbox('Captopril')
+                DRUG_C09AA01 = 0 if DRUG_C09AA01 == False else 1
+
+                DRUG_C09AA03 = acei.checkbox('Lisinopril')
+                DRUG_C09AA03 = 0 if DRUG_C09AA03 == False else 1
+
+                DRUG_C09AA05 = acei.checkbox('Ramipril')
+                DRUG_C09AA05 = 0 if DRUG_C09AA05 == False else 1
+
+                DRUG_C09AA13 = acei.checkbox('Moexipril')
+                DRUG_C09AA13 = 0 if DRUG_C09AA13 == False else 1
+
+                DRUG_C09BA02 = acei.checkbox('Enalapril')
+                DRUG_C09BA02 = 0 if DRUG_C09BA02 == False else 1
+
 
             data = {'DEMO_age': age,
                     'DEMO_bmi': bmi,
@@ -433,7 +577,45 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                     'PROCE_3798': PROCE_3798,
                     'PROCE_3964': PROCE_3964,
                     'PROCE_8855': PROCE_8855,
-                    'PROCE_8856': PROCE_8856}
+                    'PROCE_8856': PROCE_8856,
+                    'DRUG_B01AA03':DRUG_B01AA03,
+                    'DRUG_B01AB01':DRUG_B01AB01,
+                    'DRUG_B01AB05':DRUG_B01AB05,
+                    'DRUG_B01AC04':DRUG_B01AC04,
+                    'DRUG_B01AC06':DRUG_B01AC06,
+                    'DRUG_B01AC16':DRUG_B01AC16,
+                    'DRUG_B01AC22':DRUG_B01AC22,
+                    'DRUG_B01AD02':DRUG_B01AD02,
+                    'DRUG_B01AE03':DRUG_B01AE03,
+                    'DRUG_B01AE06':DRUG_B01AE06,
+                    'DRUG_C01DA02':DRUG_C01DA02,
+                    'DRUG_C01DA08':DRUG_C01DA08,
+                    'DRUG_C01DA14':DRUG_C01DA14,
+                    'DRUG_C01EB18':DRUG_C01EB18,
+                    'DRUG_C07AB02':DRUG_C07AB02,
+                    'DRUG_C07AB09':DRUG_C07AB09,
+                    'DRUG_C07AG01':DRUG_C07AG01,
+                    'DRUG_C07AG02':DRUG_C07AG02,
+                    'DRUG_C07CB02':DRUG_C07CB02,
+                    'DRUG_C08CA01':DRUG_C08CA01,
+                    'DRUG_C08CA04':DRUG_C08CA04,
+                    'DRUG_C08DA01':DRUG_C08DA01,
+                    'DRUG_C08DB01':DRUG_C08DB01,
+                    'DRUG_C09AA01':DRUG_C09AA01,
+                    'DRUG_C09AA03':DRUG_C09AA03,
+                    'DRUG_C09AA05':DRUG_C09AA05,
+                    'DRUG_C09AA13':DRUG_C09AA13,
+                    'DRUG_C09BA02':DRUG_C09BA02,
+                    'DRUG_C10AA01':DRUG_C10AA01,
+                    'DRUG_C10AA03':DRUG_C10AA03,
+                    'DRUG_C10AA05':DRUG_C10AA05,
+                    'DRUG_C10AA07':DRUG_C10AA07,
+                    'DRUG_C10AB04':DRUG_C10AB04,
+                    'DRUG_C10AD02':DRUG_C10AD02,
+                    'DRUG_C10AX06':DRUG_C10AX06,
+                    'DRUG_C10AX09':DRUG_C10AX09,
+                    'DRUG_N02BE51':DRUG_N02BE51
+                    }
 
             features = pd.DataFrame(data, index=[0])
             return features
@@ -443,13 +625,13 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
         if uploaded_file is not None:
             st.write(users_input_df)
         else:
-            st.subheader('_Đang chờ người dùng nhập file .csv. Hiện tại phần mềm đang sử dụng dữ liệu nhập tay._')
+            st.subheader('_Đang chờ người dùng nhập file .csv. Hiện tại phần mềm đang sử dụng dữ liệu từ người dùng nhập tay ở trên._')
             st.write(users_input_df)
 
         # IMPORT DATA
         cad_raw = pd.read_csv('MIMIC3_CAD.csv')
-        DRUG = [c_ for c_ in cad_raw if c_.startswith('DRUG')]  # drug for CAD
-        drop = DRUG + ['hospital_expire_flag'] + ['hadm_id']
+        #DRUG = [c_ for c_ in cad_raw if c_.startswith('DRUG')]  # drug for CAD
+        drop = ['hospital_expire_flag'] + ['hadm_id']
         cad_step1 = cad_raw.drop(columns=drop,axis=1)
         df_step1 = pd.concat([users_input_df, cad_step1], axis=0)
 
@@ -476,7 +658,7 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
             #pred.write(prediction[0])
             proba.header('_Tỷ lệ sống của bệnh nhân_')
 
-            proba.success(prediction_proba[0][0]) #%
+            proba.success(f"{str(round(prediction_proba[0][0],2))}%") #%
 
 
 
@@ -499,4 +681,7 @@ if page == 'Các khuyến cáo':  # PAGE 3
     #PREDICTING
     #y_pred = load_clf.predict(df_step1)
     #predictions = load_clf.predict_proba(df_step1)
+
+
+
 
