@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import base64
 #model
 import xgboost as xgb
 from xgboost import XGBClassifier
@@ -30,6 +30,17 @@ page = st.sidebar.radio("Chuyển tới:", options = ['Giới thiệu','Nhập s
 if page == 'Giới thiệu': #PAGE 1
     #===========NAME============
     st.title('Tên của đứa con')
+
+    file_ = open("C:/Users/COMPUTER/Desktop/ảnh cute cute/test_medical.gif", "rb")
+    contents = file_.read()
+    data_url = base64.b64encode(contents).decode("utf-8")
+    file_.close()
+
+    st.markdown(
+        f'<img src="data:image/gif;base64,{data_url}" alt="test_medical">',
+        unsafe_allow_html=True,
+    )
+
 
 if page == 'Nhập số liệu và dự đoán': #PAGE 2
     # ==========Get info============
@@ -140,7 +151,45 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                                         '(41412) Phình mạch vành',
                                         '(4142) Tắc hoàn toàn mãn tính của động mạch vành',
                                         '(4148) Các dạng bệnh tim thiếu máu cục bộ mạn tính được chỉ định khác'])
-#***undercontruct
+
+                DIAG_4111, DIAG_4139, DIAG_4142, DIAG_4148, DIAG_41001, DIAG_41011, DIAG_41021, DIAG_41031, DIAG_41041, DIAG_41071, DIAG_41072, DIAG_41081, DIAG_41091, DIAG_41189, DIAG_41400, DIAG_41401, DIAG_41402, DIAG_41412 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                if '(4111) Hội chứng mạch vành trung gian' in option: #1
+                    DIAG_4111 = 1
+                if '(4139) Đau thắt ngực khác và không xác định'in option:#2
+                    DIAG_4139 = 1
+                if '(4142) Tắc hoàn toàn mãn tính của động mạch vành'in option:#3
+                    DIAG_4142 = 1
+                if '(4148) Các dạng bệnh tim thiếu máu cục bộ mạn tính được chỉ định khác'in option:#4
+                    DIAG_4148 = 1
+                if '(41001) Nhồi máu cơ tim cấp của thành trước bên, giai đoạn chăm sóc ban đầu'in option:#5
+                    DIAG_41001 = 1
+                if '(41011) Nhồi máu cơ tim cấp của thành trước khác, giai đoạn chăm sóc ban đầu' in option: #6
+                    DIAG_41011 = 1
+                if '(41021) Nhồi máu cơ tim cấp tính của thành bên, giai đoạn chăm sóc ban đầu'in option:#7
+                    DIAG_41021 = 1
+                if '(41031) Nhồi máu cơ tim cấp của thành dưới, giai đoạn chăm sóc ban đầu'in option:#8
+                    DIAG_41031 = 1
+                if '(41041) Nhồi máu cơ tim cấp của thành dưới khác, giai đoạn chăm sóc ban đầu'in option:#9
+                    DIAG_41041 = 1
+                if '(41071) Nhồi máu cơ tim, giai đoạn chăm sóc ban đầu'in option:#10
+                    DIAG_41071 = 1
+                if '(41072) Nhồi máu cơ tim, giai đoạn chăm sóc tiếp theo' in option: #11
+                    DIAG_41072 = 1
+                if '(41081) Nhồi máu cơ tim cấp tính tại các vị trí được chỉ định khác, giai đoạn chăm sóc ban đầu'in option:#12
+                    DIAG_41081 = 1
+                if '(41091) Nhồi máu cơ tim cấp tính ở vị trí không xác định'in option:#13
+                    DIAG_41091 = 1
+                if '(41189) Các dạng bệnh tim thiếu máu cục bộ cấp tính và bán cấp tính khác'in option:#14
+                    DIAG_41189 = 1
+                if '(41400) Xơ vữa động mạch thược loại mạch không xác định, tự nhiên hoặc ghép'in option:#15
+                    DIAG_41400 = 1
+                if '(41401) Xơ vữa động mạch vành nguyên phát' in option: #16
+                    DIAG_41401 = 1
+                if '(41402) Xơ vữa động mạch vành của ghép nối động mạch tự thông'in option:#17
+                    DIAG_41402 = 1
+                if '(41412) Phình mạch vành'in option:#18
+                    DIAG_41412 = 1
+
 
 
             with st.container():
@@ -171,57 +220,57 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                                                '(8855) Chụp động mạch vành bằng một ống thông duy nhất',
                                                '(8856) Chụp động mạch vành bằng hai ống thông',
                                                ])
-#****undercontruct
+
                 PROCE_51, PROCE_54, PROCE_66, PROCE_3603, PROCE_3606, PROCE_3607, PROCE_3611, PROCE_3612, PROCE_3613, PROCE_3722, PROCE_3614, PROCE_3615, PROCE_3616, PROCE_3617, PROCE_3721, PROCE_3723, PROCE_3768, PROCE_3778, PROCE_3795, PROCE_3796, PROCE_3797, PROCE_3798, PROCE_3964, PROCE_8855, PROCE_8856 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                if option_pro == '(51) Cấy máy khử rung tim tái đồng bộ, hệ thống tổng thể [CRT-D]': #1
+                if '(51) Cấy máy khử rung tim tái đồng bộ, hệ thống tổng thể [CRT-D]' in option_pro: #1
                     PROCE_51 = 1
-                elif option_pro == '(54)Chỉ cấy hoặc thay thế máy phát xung máy khử rung tim tái đồng bộ hóa tim [CRT-D]':#2
+                if '(54)Chỉ cấy hoặc thay thế máy phát xung máy khử rung tim tái đồng bộ hóa tim [CRT-D]'in option_pro:#2
                     PROCE_54 = 1
-                elif option_pro == '(66)Nong mạch vành qua da [PTCA]':#3
+                if '(66)Nong mạch vành qua da [PTCA]'in option_pro:#3
                     PROCE_66 = 1
-                elif option_pro == '(3603)Nong động mạch vành ngực hở':#4
+                if '(3603)Nong động mạch vành ngực hở'in option_pro:#4
                     PROCE_3603 = 1
-                elif option_pro == '(3606) Đặt (các) stent động mạch vành không dùng thuốc rửa giải':#5
+                if '(3606) Đặt (các) stent động mạch vành không dùng thuốc rửa giải'in option_pro:#5
                     PROCE_3606 = 1
-                elif option_pro == '(3607) Đặt (các) stent động mạch vành rửa giải bằng thuốc]':#6
+                if '(3607) Đặt (các) stent động mạch vành rửa giải bằng thuốc]'in option_pro:#6
                     PROCE_3607 = 1
-                elif option_pro == '(3611)(Động mạch chủ) bắc cầu mạch vành của một động mạch vành':#7
+                if '(3611)(Động mạch chủ) bắc cầu mạch vành của một động mạch vành'in option_pro:#7
                     PROCE_3611 = 1
-                elif option_pro == '(3612) (Động mạch chủ) bắc cầu mạch vành của hai động mạch vành':#8
+                if '(3612) (Động mạch chủ) bắc cầu mạch vành của hai động mạch vành'in option_pro:#8
                     PROCE_3612 = 1
-                elif option_pro == '(3613)(Động mạch chủ) bắc cầu mạch vành của ba động mạch vành':#9
+                if '(3613)(Động mạch chủ) bắc cầu mạch vành của ba động mạch vành'in option_pro:#9
                     PROCE_3613 = 1
-                elif option_pro == '(3722) Thông tim trái':#10
+                if '(3722) Thông tim trái'in option_pro:#10
                     PROCE_3722 = 1
-                elif option_pro == '(3614)(Động mạch chủ) bắc cầu mạch vành của bốn hoặc nhiều động mạch vành':#11
+                if '(3614)(Động mạch chủ) bắc cầu mạch vành của bốn hoặc nhiều động mạch vành'in option_pro:#11
                     PROCE_3614 = 1
-                elif option_pro == '(3615) Cầu nối động mạch vành-động mạch vú đơn bên trong':#12
+                if '(3615) Cầu nối động mạch vành-động mạch vú đơn bên trong' in option_pro:#12
                     PROCE_3615 = 1
-                elif option_pro == '(3616) Cầu nối động mạch vành - động mạch vú đôi bên trong':#13
+                if '(3616) Cầu nối động mạch vành - động mạch vú đôi bên trong' in option_pro:#13
                     PROCE_3616 = 1
-                elif option_pro == '(3617) Bắc cầu động mạch vành bụng':#14
+                if '(3617) Bắc cầu động mạch vành bụng' in option_pro:#14
                     PROCE_3617 = 1
-                elif option_pro == '(3721) Thông tim phải':#15
+                if '(3721) Thông tim phải' in option_pro:#15
                     PROCE_3721 = 1
-                elif option_pro == '(3723) Kết hợp thông tim phải và tim trái':#16
+                if '(3723) Kết hợp thông tim phải và tim trái'in option_pro:#16
                     PROCE_3723 = 1
-                elif option_pro == '(3768) Lắp thiết bị trợ tim ngoài qua da':#17
+                if '(3768) Lắp thiết bị trợ tim ngoài qua da'in option_pro:#17
                     PROCE_3768 = 1
-                elif option_pro == '(3778) Lắp đặt hệ thống máy tạo nhịp tim truyền tĩnh mạch tạm thời':#18
+                if '(3778) Lắp đặt hệ thống máy tạo nhịp tim truyền tĩnh mạch tạm thời'in option_pro:#18
                     PROCE_3778 = 1
-                elif option_pro == '(3795) Chỉ cấy(các) dây dẫn máy khử rung tim / máy khử rung tim tự động':#19
+                if '(3795) Chỉ cấy(các) dây dẫn máy khử rung tim / máy khử rung tim tự động'in option_pro:#19
                     PROCE_3795 = 1
-                elif option_pro == '(3796) Chỉ cấy máy phát xung máy khử rung tim / máy khử rung tim tự động':#20
+                if '(3796) Chỉ cấy máy phát xung máy khử rung tim / máy khử rung tim tự động'in option_pro:#20
                     PROCE_3796 = 1
-                elif option_pro == '(3797) Chỉ thay thế(các) dây dẫn máy khử rung tim / máy khử rung tim tự động':#21
+                if '(3797) Chỉ thay thế(các) dây dẫn máy khử rung tim / máy khử rung tim tự động'in option_pro:#21
                     PROCE_3797 = 1
-                elif option_pro == '(3798) Chỉ thay thế máy phát xung máy khử rung tim / máy khử rung tim tự động':#22
+                if '(3798) Chỉ thay thế máy phát xung máy khử rung tim / máy khử rung tim tự động'in option_pro:#22
                     PROCE_3798 = 1
-                elif option_pro == '(3964) Máy tạo nhịp tim trong phẫu thuật':#23
+                if '(3964) Máy tạo nhịp tim trong phẫu thuật'in option_pro:#23
                     PROCE_3964 = 1
-                elif option_pro == '(8855) Chụp động mạch vành bằng một ống thông duy nhất':#24
+                if '(8855) Chụp động mạch vành bằng một ống thông duy nhất'in option_pro:#24
                     PROCE_8855 = 1
-                else:
+                if '(8856) Chụp động mạch vành bằng hai ống thông' in option_pro: #25
                     PROCE_8856 = 1
 
                 # ===PART2===
@@ -319,7 +368,8 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                 first_icu_stay = 0
                 first_icu_stay_demo = 0
                 seq_num = 0
-                DIAG_4111, DIAG_4139, DIAG_4142, DIAG_4148, DIAG_41001, DIAG_41011, DIAG_41021, DIAG_41031, DIAG_41041, DIAG_41071, DIAG_41072, DIAG_41081,DIAG_41091, DIAG_41189, DIAG_41400, DIAG_41401, DIAG_41402,DIAG_41412 = 0, 0, 0, 0, 0, 0, 0, 0, 0,0 ,0,0,0,0,0,0,0,0
+
+
 #DRUGS USED OR USING
             with st.container():
                 st.header('_Thuốc bệnh nhân đã và đang sử dụng_')
@@ -338,6 +388,9 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                 DRUG_B01AC06 = plate.checkbox('Aspirin')
                 DRUG_B01AC06 = 0 if DRUG_B01AC06 == False else 1
 
+                DRUG_N02BE51 = plate.checkbox('Excedrin')
+                DRUG_N02BE51 = 0 if DRUG_N02BE51 == False else 1
+
                 DRUG_B01AC04 = plate.checkbox('Clopidogrel')
                 DRUG_B01AC04 = 0 if DRUG_B01AC04 == False else 1
 
@@ -347,8 +400,6 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                 DRUG_B01AC22 = plate.checkbox('Prasugrel')
                 DRUG_B01AC22 = 0 if DRUG_B01AC22 == False else 1
 
-                DRUG_N02BE51 = plate.checkbox('Excedrin')
-                DRUG_N02BE51 = 0 if DRUG_N02BE51 == False else 1
 
                 DRUG_B01AB01 = coagu.checkbox('Heparin')
                 DRUG_B01AB01 = 0 if DRUG_B01AB01 == False else 1
@@ -647,10 +698,10 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
 
         with st.container():
             st.warning("")
-            st.title('Dư đoán tỷ lệ sống của bệnh nhân')
+            st.title('Dự đoán tỷ lệ sống của bệnh nhân')
             pred, proba = st.columns([1, 1])
 
-            pred.header('_Tình trạng bệnh nhân:_')
+            pred.header('_Tiên lượng của bệnh nhân_')
             if prediction[0] == 0:
                 pred.success('Sống')
             else:
@@ -660,7 +711,41 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
 
             proba.success(f"{str(round(prediction_proba[0][0],2))}%") #%
 
+        #STEP2
+        with st.container():
+            st.text("")
+            st.title('Dự đoán thuốc tối ưu cho bệnh nhân')
+            pred2, proba2 = st.columns([1, 1])
 
+            DRUG = [c_ for c_ in cad_raw if c_.startswith('DRUG')]  # drug for CAD
+            drop2 = ['hospital_expire_flag'] + ['hadm_id'] + DRUG
+            cad_step2 = cad_raw.drop(columns=drop2, axis=1)
+            df_step2 = pd.concat([users_input_df, cad_step2], axis=0)
+            df_step2 = df_step2.drop(DRUG,axis=1)
+
+        # ENCODE SOME FEATURES (GENDER, MARITAL, ETHINICITY,...?)
+            df_step2 = df_step2[:1]
+
+        # LOAD SAVED MODEL
+        load_clf2 = pickle.load(open('step2_clf.pkl', 'rb'))
+
+        # PREDICTION
+        probas = load_clf2.predict_proba(df_step2)
+
+        #INTERFACE
+        probas_array = np.array(probas)
+        probas_test = probas_array[:, :, 1].T
+        test = pd.DataFrame(probas_test, columns=DRUG)
+        cols = test.apply(lambda s: s.abs().nlargest(7).index.tolist(), axis=1)
+        drug_recommend = pd.DataFrame(cols, columns=['DrugsRecommend'])
+
+        atc_drug_name = pd.read_csv('DRUG_ATC_FINAL.csv')
+
+        drug_to_use = pd.DataFrame(drug_recommend['DrugsRecommend'][0], columns=['Mã ATC'])
+        drug_to_use_final = drug_to_use.merge(atc_drug_name, how='left', on='Mã ATC')
+
+        st._legacy_dataframe(drug_to_use_final)
+        st.subheader("_Thuốc chỉ mang tính chất tham khảo_")
 
 if page == 'Các khuyến cáo':  # PAGE 3
     # ==========Get info============

@@ -1,0 +1,38 @@
+﻿Mã ATC,Tên thuốc
+DRUG_B01AA03,Warfarin
+DRUG_B01AB01,Heparin
+DRUG_B01AB05,Enoxaheparin
+DRUG_B01AC04,Clopidogrel
+DRUG_B01AC06,Aspirin
+DRUG_B01AC16,Eptifibatide
+DRUG_B01AC22,Prasugrel
+DRUG_B01AD02,Streptokinase
+DRUG_B01AE03,Argatroban
+DRUG_B01AE06,Bivalirudin
+DRUG_C01DA02,Nitroglycerin
+DRUG_C01DA08,Isosorbide 
+DRUG_C01DA14,Isosorbide Dinitrate
+DRUG_C01EB18,Ranolazine
+DRUG_C07AB02,Metoprolol
+DRUG_C07AB09,Esmolol
+DRUG_C07AG01,Labetalol
+DRUG_C07AG02,Carvedilol
+DRUG_C07CB02,Atenolol
+DRUG_C08CA01,Amlodipine
+DRUG_C08CA04,Nicardipine HCl
+DRUG_C08DA01,Verapamil SR
+DRUG_C08DB01,Diltiazem SR
+DRUG_C09AA01,Captopril
+DRUG_C09AA03,Lisinopril
+DRUG_C09AA05,Ramipril
+DRUG_C09AA13,Moexipril
+DRUG_C09BA02,Enalapril Maleate
+DRUG_C10AA01,Simvastatin
+DRUG_C10AA03,Pravastatin
+DRUG_C10AA05,Atorvastatin
+DRUG_C10AA07,Rosuvastatin Calcium
+DRUG_C10AB04,Gemfibrozil
+DRUG_C10AD02,Niacin
+DRUG_C10AX06,Fish Oil (Omega 3)
+DRUG_C10AX09,Ezetimibe
+DRUG_N02BE51,Excedrin Aspirin Free
