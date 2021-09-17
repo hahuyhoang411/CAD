@@ -1,6 +1,7 @@
 #=========IMPORT LIBRARY===========
 import streamlit as st
 st.set_page_config(layout="wide")
+#with st.cache(allow_output_mutation=True):
 
 #library
 import pandas as pd
@@ -21,7 +22,7 @@ from xgboost import XGBClassifier
 
 
 #SIDEBAR
-new_title = '<p style="font-size: 42px; font-style: Bold">Tên đứa con</p>'
+new_title = '<p style="font-size: 42px; font-style: Bold">MeptiC</p>'
 st.sidebar.markdown(new_title, unsafe_allow_html=True)
 st.sidebar.markdown('Phần mềm dự đoán tỷ lệ sống và thuốc phù hợp cho bệnh nhân mắc bệnh tim thiếu máu cục bộ')
 st.sidebar.title("-------------------------------")
@@ -29,9 +30,9 @@ page = st.sidebar.radio("Chuyển tới:", options = ['Giới thiệu','Nhập s
 
 if page == 'Giới thiệu': #PAGE 1
     #===========NAME============
-    st.title('Tên của đứa con')
+    st.title('MeptiC')
 
-    file_ = open("C:/Users/COMPUTER/Desktop/ảnh cute cute/test_medical.gif", "rb")
+    file_ = open("tengif.gif", "rb")
     contents = file_.read()
     data_url = base64.b64encode(contents).decode("utf-8")
     file_.close()
@@ -59,7 +60,6 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
 #=======PAGE 2=======
 #====DEMOGRAPHIC====
     #PART 1 LABELS
-    st.title("File .csv của bệnh nhân")
     uploaded_file = st.sidebar.file_uploader("Đưa file .csv của bạn vào đây:", type=["csv"],help='Hãy chuyển về đuôi .csv')
     if uploaded_file is not None:
         input_df = pd.read_csv(uploaded_file)
@@ -83,7 +83,7 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                 gender = 0 if gender == 'Nữ' else 1 #gender change
                 age = demo.slider('Tuổi:', 18, 89)
                 ethi = demo.selectbox('Dân tộc:',
-                                ('Da trắng', 'Da vàng', 'Da đen',
+                                ('Da vàng', 'Da trắng', 'Da đen',
                                  'Mỹ bản địa', 'Mỹ Latinh', 'Trung Đông', 'Khác'))
                 #ethinity
                 if ethi == 'Da trắng':
@@ -127,8 +127,8 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                 surgery = demo2.selectbox('Tình trạng phẫu thuật:',
                                    ('Có','Không'))
                 surgery = 0 if surgery == 'Không' else 1  # surgery change
-                bmi = demo2.number_input('Chỉ số BMI:')
-                stay = demo2.number_input('Lần nhấp viện thứ:',step=1)
+                bmi = demo2.number_input('Chỉ số BMI:', value = 20)
+                stay = demo2.number_input('Lần nhấp viện thứ:',step=1, value = 1)
 
             #DIAG AND PROCE
             with st.container():
@@ -282,42 +282,42 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
 
                     vital1, vital2, vital3, lab = st.columns([1, 1, 1, 1])
 
-                    heartrate_min = vital1.number_input('Nhịp tim nhỏ nhất:')
-                    sysbp_min = vital1.number_input('Huyết áp nhỏ nhất:')
-                    diasbp_min = vital1.number_input('Huyết áp tâm thu nhỏ nhất:')
-                    meanbp_min = vital1.number_input('Huyết áp tâm trương nhỏ nhất:')
-                    resprate_min = vital1.number_input('Nhịp thở nhỏ nhất:')
-                    tempc_min = vital1.number_input('Nhiệt độ nhỏ nhất:')
-                    spo2_min = vital1.number_input('SpO2 nhỏ nhất:')
-                    glucose_min = vital1.number_input('Glucose nhỏ nhất:')
+                    heartrate_min = vital1.number_input('Nhịp tim nhỏ nhất (bpm):')
+                    sysbp_min = vital1.number_input('Huyết áp nhỏ nhất (mmHg):')
+                    diasbp_min = vital1.number_input('Huyết áp tâm thu nhỏ nhất (mmHg):')
+                    meanbp_min = vital1.number_input('Huyết áp tâm trương nhỏ nhất (mmHg):')
+                    resprate_min = vital1.number_input('Nhịp thở nhỏ nhất (bpm):')
+                    tempc_min = vital1.number_input('Nhiệt độ nhỏ nhất (C):')
+                    spo2_min = vital1.number_input('SpO2 nhỏ nhất (%):')
+                    glucose_min = vital1.number_input('Glucose nhỏ nhất (mg/dL):')
 
-                    heartrate_max = vital2.number_input('Nhịp tim lớn nhất:')
-                    sysbp_max = vital2.number_input('Huyết áp lớn nhất:')
-                    diasbp_max = vital2.number_input('Huyết áp tâm thu lớn nhất:')
-                    meanbp_max = vital2.number_input('Huyết áp tâm trương lớn nhất:')
-                    resprate_max = vital2.number_input('Nhịp thở lớn nhất:')
-                    tempc_max = vital2.number_input('Nhiệt độ lớn nhất:')
-                    spo2_max = vital2.number_input('SpO2 lớn nhất:')
-                    glucose_max = vital2.number_input('Glucose lớn nhất:')
+                    heartrate_max = vital2.number_input('Nhịp tim lớn nhất (bpm):')
+                    sysbp_max = vital2.number_input('Huyết áp lớn nhất (mmHg):')
+                    diasbp_max = vital2.number_input('Huyết áp tâm thu lớn nhất (mmHg):')
+                    meanbp_max = vital2.number_input('Huyết áp tâm trương lớn nhất (mmHg):')
+                    resprate_max = vital2.number_input('Nhịp thở lớn nhất (bpm):')
+                    tempc_max = vital2.number_input('Nhiệt độ lớn nhất (C):')
+                    spo2_max = vital2.number_input('SpO2 lớn nhất (%):')
+                    glucose_max = vital2.number_input('Glucose lớn nhất (mg/dL):')
 
-                    heartrate_mean = vital3.number_input('Nhịp tim trung bình:')
-                    sysbp_mean = vital3.number_input('Huyết áp trung bình:')
-                    diasbp_mean = vital3.number_input('Huyết áp tâm thu trung bình:')
-                    meanbp_mean = vital3.number_input('Huyết áp tâm trương trung bình:')
-                    resprate_mean = vital3.number_input('Nhịp thở trung bình:')
-                    tempc_mean = vital3.number_input('Nhiệt độ trung bình:')
-                    spo2_mean = vital3.number_input('SpO2 trung bình:')
-                    glucose_mean = vital3.number_input('Glucose trung bình:')
+                    heartrate_mean = vital3.number_input('Nhịp tim trung bình (bpm):')
+                    sysbp_mean = vital3.number_input('Huyết áp trung bình (mmHg):')
+                    diasbp_mean = vital3.number_input('Huyết áp tâm thu trung bình (mmHg):')
+                    meanbp_mean = vital3.number_input('Huyết áp tâm trương trung bình (mmHg):')
+                    resprate_mean = vital3.number_input('Nhịp thở trung bình (bpm):')
+                    tempc_mean = vital3.number_input('Nhiệt độ trung bình (C):')
+                    spo2_mean = vital3.number_input('SpO2 trung bình (%):')
+                    glucose_mean = vital3.number_input('Glucose trung bình (mg/dL):')
 
                     # LAB_FEATURE
-                    choles = lab.number_input('Tỉ lệ cholesterol:')
-                    choles_total = lab.number_input('Tổng lượng cholesterol:')
-                    hdl = lab.number_input('HDL:')
-                    ldl = lab.number_input('LDL:')
-                    tri = lab.number_input('Triglycerids:')
-                    tro = lab.number_input('Troponint:')
-                    ck_mb = lab.number_input('Ckmb:')
-                    ck = lab.number_input('Ck:')
+                    choles = lab.number_input('Tỉ lệ cholesterol:', value = 1.00)
+                    choles_total = lab.number_input('Tổng lượng cholesterol (mg/dL):',value = 150.00)
+                    hdl = lab.number_input('HDL (mg/dL):', value = 60.00)
+                    ldl = lab.number_input('LDL (mg/dL):', value = 70.00)
+                    tri = lab.number_input('Triglycerids (mg/dL):', value = 120.00)
+                    tro = lab.number_input('TroponinT (ng/L):', value = 10.00)
+                    ck_mb = lab.number_input('Ckmb (u/L):', value = 20.00)
+                    ck = lab.number_input('Ck (u/L):', value = 80.00)
 
         #===SCORE PIVLAB===
             with st.expander("Chỉ số sinh hóa và thang điểm"):
@@ -341,25 +341,24 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                 sofa = score2.number_input('Điểm SOFA:')
                 saps = score2.number_input('Điểm SAPS:')
 
-                albumin = piv.number_input('Albumin:')
-                anion = piv.number_input('Aninongap:')
-                bicar = piv.number_input('Bicarbonate:')
-                bili = piv.number_input('Bilirubin:')
-                crea = piv.number_input('Creatinine:')
-                chlo = piv.number_input('Chloride:')
-                glu = piv.number_input('Glucose:')
-                hema = piv.number_input('Hematocrit:')
-                hemo = piv.number_input('Hemoglobin:')
-
-                lac = piv2.number_input('Lactate:')
-                Plate = piv2.number_input('Platelet:')
-                potassium = piv2.number_input('Kali:')
-                ptt = piv2.number_input('aPTT:')
-                inr = piv2.number_input('INR')
-                pt = piv2.number_input('PT')
-                sodium = piv2.number_input('Natri:')
-                bun = piv2.number_input('BUN:')
-                wbc = piv2.number_input('WBC:')
+                albumin = piv.number_input('Albumin (g/L):', value = 40.00)
+                anion = piv.number_input('Aninongap (mEq/l):', value = 10.00)
+                bicar = piv.number_input('Bicarbonate (mmol/l):', value = 22.00)
+                bili = piv.number_input('Bilirubin (mg/dL):', value = 0.50)
+                crea = piv.number_input('Creatinine (mg/dL):', value = 1.00)
+                chlo = piv.number_input('Chloride (mEq/L):', value = 100.00)
+                glu = piv.number_input('Glucose (mmol/L):', value = 120.00)
+                hema = piv.number_input('Hematocrit (L/L):', value = 0.40)
+                hemo = piv.number_input('Hemoglobin (g/dL):', value = 13.00)
+                lac = piv2.number_input('Lactate (mg/dL):', value = 10.00)
+                Plate = piv2.number_input('Platelet (g/L):', value = 200.00)
+                potassium = piv2.number_input('Kali (mEq/L):', value = 4.00)
+                ptt = piv2.number_input('aPTT (s):', value = 25.00)
+                inr = piv2.number_input('INR:', value = 1.00)
+                pt = piv2.number_input('PT (s):', value = 10.00)
+                sodium = piv2.number_input('Natri (mmol/L):', value = 140.00)
+                bun = piv2.number_input('BUN (mg/dL):', value = 10.00)
+                wbc = piv2.number_input('WBC (g/L):', value = 5.00)
 
                 #NOT DEFINE YET
                 los_hos = 0
@@ -422,13 +421,15 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                 DRUG_B01AD02 = fibrin.checkbox("Alteplase")
                 DRUG_B01AD02 = 0 if DRUG_B01AD02 == False else 1
 
-                DRUG_C01DA02 = lipid.checkbox('Nitroglycerin')
+                fibrin.subheader('Nitrat hữu cơ')
+
+                DRUG_C01DA02 = fibrin.checkbox('Nitroglycerin')
                 DRUG_C01DA02 = 0 if DRUG_C01DA02 == False else 1
 
-                DRUG_C01DA08 = lipid.checkbox('Isosorbide')
+                DRUG_C01DA08 = fibrin.checkbox('Isosorbide')
                 DRUG_C01DA08 = 0 if DRUG_C01DA08 == False else 1
 
-                DRUG_C01DA14 = lipid.checkbox('Isosorbide Dinitrate')
+                DRUG_C01DA14 = fibrin.checkbox('Isosorbide Dinitrate')
                 DRUG_C01DA14 = 0 if DRUG_C01DA14 == False else 1
 
                 DRUG_C10AA01 = lipid.checkbox('Simvastatin')
