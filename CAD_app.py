@@ -8,6 +8,7 @@ maxUploadSize = 200
 import pandas as pd
 import pickle
 import numpy as np
+from PIL import Image
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score, confusion_matrix,log_loss,plot_confusion_matrix
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -33,6 +34,7 @@ if page == 'Giới thiệu': #PAGE 1
     #===========NAME============
     #st.title('MeptiC')
 
+    #GIF
     #file_ = open("MeptiC.gif", "rb")
     #contents = file_.read()
     #data_url = base64.b64encode(contents).decode("utf-8")
@@ -42,10 +44,16 @@ if page == 'Giới thiệu': #PAGE 1
     #    f'<img src="data:image/gif;base64,{data_url}" alt="test_medical">',
     #    unsafe_allow_html=True,
     #)
-    video_file = open('MeptiC.mp4', 'rb')
-    video_bytes = video_file.read()
 
-    st.video(video_bytes, start_time=0)
+    ###VIDEO
+    #video_file = open('MeptiC.mp4', 'rb')
+    #video_bytes = video_file.read()
+
+    #st.video(video_bytes, start_time=0)
+    ###IMAGE
+    image = Image.open('MeptiC.jpg')
+
+    st.image(image)
 
 if page == 'Nhập số liệu và dự đoán': #PAGE 2
     # ==========Get info============
