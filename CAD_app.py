@@ -1,6 +1,7 @@
 #=========IMPORT LIBRARY===========
 import streamlit as st
 st.set_page_config(layout="wide")
+maxUploadSize = 200
 #with st.cache(allow_output_mutation=True):
 
 #library
@@ -22,17 +23,17 @@ from xgboost import XGBClassifier
 
 
 #SIDEBAR
-new_title = '<p style="font-size: 42px; font-style: Bold">MeptiC</p>'
+new_title = '<p style="font-size: 50px">MeptiC</p>'
 st.sidebar.markdown(new_title, unsafe_allow_html=True)
-st.sidebar.markdown('Phần mềm dự đoán tỷ lệ sống và thuốc phù hợp cho bệnh nhân mắc bệnh tim thiếu máu cục bộ')
+st.sidebar.markdown('Phần mềm tiên lượng kì vọng sống và thuốc phù hợp cho bệnh nhân mắc bệnh tim thiếu máu cục bộ')
 st.sidebar.title("-------------------------------")
 page = st.sidebar.radio("Chuyển tới:", options = ['Giới thiệu','Nhập số liệu và dự đoán','Các khuyến cáo'],key='1')
 
 if page == 'Giới thiệu': #PAGE 1
     #===========NAME============
-    st.title('MeptiC')
+    #st.title('MeptiC')
 
-    file_ = open("tengif.gif", "rb")
+    file_ = open("MeptiC.gif", "rb")
     contents = file_.read()
     data_url = base64.b64encode(contents).decode("utf-8")
     file_.close()
@@ -41,7 +42,10 @@ if page == 'Giới thiệu': #PAGE 1
         f'<img src="data:image/gif;base64,{data_url}" alt="test_medical">',
         unsafe_allow_html=True,
     )
+    #video_file = open('MeptiC.mp4', 'rb')
+    #video_bytes = video_file.read()
 
+    #st.video(video_bytes, start_time=0)
 
 if page == 'Nhập số liệu và dự đoán': #PAGE 2
     # ==========Get info============
@@ -710,7 +714,7 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
             #pred.write(prediction[0])
             proba.header('_Tỷ lệ sống của bệnh nhân_')
 
-            proba.success(f"{str(round(prediction_proba[0][0],2))}%") #%
+            proba.success(f"{str(round(prediction_proba[0][0],2))*100}%") #%
 
         #STEP2
         with st.container():
