@@ -33,19 +33,19 @@ if page == 'Giới thiệu': #PAGE 1
     #===========NAME============
     #st.title('MeptiC')
 
-    file_ = open("MeptiC.gif", "rb")
-    contents = file_.read()
-    data_url = base64.b64encode(contents).decode("utf-8")
-    file_.close()
+    #file_ = open("MeptiC.gif", "rb")
+    #contents = file_.read()
+    #data_url = base64.b64encode(contents).decode("utf-8")
+    #file_.close()
 
-    st.markdown(
-        f'<img src="data:image/gif;base64,{data_url}" alt="test_medical">',
-        unsafe_allow_html=True,
-    )
-    #video_file = open('MeptiC.mp4', 'rb')
-    #video_bytes = video_file.read()
+    #st.markdown(
+    #    f'<img src="data:image/gif;base64,{data_url}" alt="test_medical">',
+    #    unsafe_allow_html=True,
+    #)
+    video_file = open('MeptiC.mp4', 'rb')
+    video_bytes = video_file.read()
 
-    #st.video(video_bytes, start_time=0)
+    st.video(video_bytes, start_time=0)
 
 if page == 'Nhập số liệu và dự đoán': #PAGE 2
     # ==========Get info============
