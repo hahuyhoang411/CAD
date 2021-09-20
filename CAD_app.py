@@ -1,4 +1,6 @@
 #=========IMPORT LIBRARY===========
+from typing import Optional, Any
+
 import streamlit as st
 st.set_page_config(layout="wide")
 maxUploadSize = 200
@@ -51,9 +53,27 @@ if page == 'Giới thiệu': #PAGE 1
 
     #st.video(video_bytes, start_time=0)
     ###IMAGE
-    image = Image.open('MeptiC.jpg')
+    #image = Image.open('MeptiC.jpg')
 
-    st.image(image)
+    #st.image(image,use_column_width=True)
+
+    #BACKGROUND
+    main_bg = "MeptiC.jpg"
+    main_bg_ext = "jpg"
+
+    #side_bg = "sample.jpg"
+    #side_bg_ext = "jpg"
+
+    st.markdown(
+        f"""
+        <style>
+        .reportview-container {{
+            background: url(data:image/{main_bg_ext};base64,{base64.b64encode(open(main_bg, "rb").read()).decode()})
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
 if page == 'Nhập số liệu và dự đoán': #PAGE 2
     # ==========Get info============
@@ -722,7 +742,7 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
             #pred.write(prediction[0])
             proba.header('_Tỷ lệ sống của bệnh nhân_')
 
-            proba.success(f"{str(round(prediction_proba[0][0],2))*100}%") #%
+            proba.success(f"{str(round(prediction_proba[0][0]*100,2))}%") #%
 
         #STEP2
         with st.container():
