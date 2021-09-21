@@ -107,6 +107,8 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
             #ELEMENT PART1
             with st.container():
                 demo, demo2, diag = st.columns([1,1,2])
+                cols1, cols2 = st.columns([1, 1])
+                diag1, diag2, diag3, diag4 = st.columns([1, 1,1,1])
 
             #DEMO
             with st.container():
@@ -160,7 +162,22 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                                    ('Có','Không'))
                 surgery = 0 if surgery == 'Không' else 1  # surgery change
                 bmi = demo2.number_input('Chỉ số BMI:', value = 20)
-                stay = demo2.number_input('Lần nhấp viện thứ:',step=1, value = 1)
+                stay = demo2.number_input('Lần nhấp viện thứ:', step=1, value = 1)
+
+                # NOT DEFINE YET
+
+                los_hos = diag1.number_input('Số ngày nằm viện:', value = 1.00)
+
+                first_hosp_stay = diag2.selectbox('Lần nhập viện đầu tiên:', ('Đúng', 'Tái nhập viện'))
+                first_hosp_stay = 0 if first_hosp_stay == 'Tái nhập viện' else 1  # gender change
+
+                los_icu = diag3.number_input('Số ngày nằm ICU:', value = 1.00)
+
+                first_icu_stay = diag4.selectbox('Lần nhập ICU đầu tiên:', ('Đúng', 'Tái nhập ICU'))
+                first_icu_stay = 0 if first_icu_stay == 'Tái nhập ICU' else 1
+
+                first_icu_stay_demo = 0
+
 
             #DIAG AND PROCE
             with st.container():
@@ -222,7 +239,7 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                 if '(41412) Phình mạch vành'in option:#18
                     DIAG_41412 = 1
 
-
+            seq_num = diag.number_input('Mức độ quan trọng của bệnh:', value = 1, max_value = 5)
 
             with st.container():
                 option_pro = diag.multiselect('Các thủ thuật thực hiện:',
@@ -391,14 +408,6 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                 sodium = piv2.number_input('Natri (mmol/L):', value = 140.00)
                 bun = piv2.number_input('BUN (mg/dL):', value = 10.00)
                 wbc = piv2.number_input('WBC (g/L):', value = 5.00)
-
-                #NOT DEFINE YET
-                los_hos = 0
-                first_hosp_stay = 0
-                los_icu = 0
-                first_icu_stay = 0
-                first_icu_stay_demo = 0
-                seq_num = 0
 
 
 #DRUGS USED OR USING
@@ -793,13 +802,5 @@ if page == 'Các khuyến cáo':  # PAGE 3
 
     st.markdown('<p class="big-font">Các khuyến cáo</p>', unsafe_allow_html=True)
     st.success('Trang đang được hoàn thiện. Tính năng sẽ sớm ra mắt.')
-
-
-
-    #PREDICTING
-    #y_pred = load_clf.predict(df_step1)
-    #predictions = load_clf.predict_proba(df_step1)
-
-
 
 
