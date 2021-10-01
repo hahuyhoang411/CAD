@@ -94,7 +94,7 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
     #PART 1 LABELS
     uploaded_file = st.sidebar.file_uploader("Đưa file .csv của bạn vào đây:", type=["csv"],help='Hãy chuyển về đuôi .csv')
     if uploaded_file is not None:
-        input_df = pd.read_csv(uploaded_file)
+        users_input_df = pd.read_csv(uploaded_file)
     else:
         def user_input_features():
             st.title('**Dữ liệu nhập tay**')
@@ -162,7 +162,7 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                                    ('Có','Không'))
                 surgery = 0 if surgery == 'Không' else 1  # surgery change
                 bmi = demo2.number_input('Chỉ số BMI:', value = 20)
-                stay = demo2.number_input('Lần nhấp viện thứ:', step=1, value = 1)
+                stay = demo2.number_input('Lần nhấp viện thứ:', step = 1, value = 1)
 
                 # NOT DEFINE YET
 
@@ -241,6 +241,40 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
 
             seq_num = diag.number_input('Mức độ quan trọng của bệnh:', value = 1, max_value = 5)
 
+            #COMOBIDITY
+            with st.container():
+                option_como = diag.multiselect('Các bệnh đi kèm:',
+                                               ['COMO_hemorrhage',
+                                                'COMO_thrombosis',
+                                                'COMO_atrial_fibri',
+                                                'COMO_renlfail',
+                                                'COMO_coag',
+                                                'COMO_renfdrg',
+                                                'COMO_renaldrg',
+                                                'COMO_coagdrg',
+                                                'COMO_valve'])
+            COMO_hemorrhage,COMO_thrombosis,COMO_atrial_fibri,COMO_renlfail,COMO_coag,COMO_renfdrg,COMO_renaldrg,COMO_coagdrg, COMO_valve = 0,0,0,0,0,0,0,0,0
+            if 'COMO_hemorrhage' in option_como:  # 1
+                COMO_hemorrhage = 1
+            if 'COMO_thrombosis' in option_como:  # 2
+                COMO_thrombosis = 1
+            if 'COMO_atrial_fibri' in option_como:  # 3
+                COMO_atrial_fibri = 1
+            if 'COMO_renlfail' in option_como:  # 4
+                COMO_renlfail = 1
+            if 'COMO_coag' in option_como:  # 5
+                COMO_coag = 1
+            if 'COMO_renfdrg' in option_como:  # 6
+                COMO_renfdrg = 1
+            if 'COMO_renaldrg' in option_como:  # 7
+                COMO_renaldrg = 1
+            if 'COMO_coagdrg' in option_como:  # 8
+                COMO_coagdrg = 1
+            if 'COMO_valve' in option_como:  # 9
+                COMO_valve = 1
+
+
+            #PROCEDURES
             with st.container():
                 option_pro = diag.multiselect('Các thủ thuật thực hiện:',
                                               ['(51) Cấy máy khử rung tim tái đồng bộ, hệ thống tổng thể [CRT-D]',
@@ -428,8 +462,8 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                 DRUG_B01AC06 = plate.checkbox('Aspirin')
                 DRUG_B01AC06 = 0 if DRUG_B01AC06 == False else 1
 
-                DRUG_N02BE51 = plate.checkbox('Excedrin')
-                DRUG_N02BE51 = 0 if DRUG_N02BE51 == False else 1
+                #DRUG_N02BE51 = plate.checkbox('Excedrin')
+                DRUG_N02BE51 = 0
 
                 DRUG_B01AC04 = plate.checkbox('Clopidogrel')
                 DRUG_B01AC04 = 0 if DRUG_B01AC04 == False else 1
@@ -646,6 +680,15 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
                     'VITALFDAY_glucose_min': glucose_min,
                     'VITALFDAY_glucose_max': glucose_max,
                     'VITALFDAY_glucose_mean': glucose_mean,
+                    'COMO_hemorrhage': COMO_hemorrhage,
+                    'COMO_thrombosis': COMO_thrombosis,
+                    'COMO_atrial_fibri': COMO_atrial_fibri,
+                    'COMO_renlfail': COMO_renlfail,
+                    'COMO_coag': COMO_coag,
+                    'COMO_renfdrg': COMO_renfdrg,
+                    'COMO_renaldrg': COMO_renaldrg,
+                    'COMO_coagdrg': COMO_coagdrg,
+                    'COMO_valve': COMO_valve,
                     'PROCE_51': PROCE_51,
                     'PROCE_54': PROCE_54,
                     'PROCE_66': PROCE_66,
@@ -715,58 +758,59 @@ if page == 'Nhập số liệu và dự đoán': #PAGE 2
 
         users_input_df = user_input_features()
 
-        if uploaded_file is not None:
-            st.write(users_input_df)
+    # IMPORT DATA
+    cad_raw = pd.read_csv('MIMIC3_CAD.csv')
+    #DRUG = [c_ for c_ in cad_raw if c_.startswith('DRUG')]  # drug for CAD
+    drop = ['hospital_expire_flag'] + ['hadm_id']
+    cad_step1 = cad_raw.drop(columns=drop,axis=1)
+    df_step1 = pd.concat([users_input_df, cad_step1], axis=0)
+
+    # ENCODE SOME FEATURES (GENDER, MARITAL, ETHINICITY,...?)
+    df_step1 = df_step1[:1]
+
+    #PRINT DATA
+    if uploaded_file is not None:
+        st.write(users_input_df)
+    else:
+        st.subheader('_Đang chờ người dùng nhập file .csv. Hiện tại phần mềm đang sử dụng dữ liệu từ người dùng nhập tay ở trên._')
+        st.write(users_input_df)
+
+    # LOAD SAVED MODEL
+    load_clf = pickle.load(open('step1_clf.pkl', 'rb'))
+
+    # PREDICTION
+    prediction = load_clf.predict(df_step1)
+    prediction_proba = load_clf.predict_proba(df_step1)
+
+    with st.container():
+        st.warning("")
+        st.title('Dự đoán tỷ lệ sống của bệnh nhân')
+        pred, proba = st.columns([1, 1])
+
+        pred.header('_Tiên lượng của bệnh nhân_')
+        if prediction[0] == 0:
+            pred.success('Sống')
         else:
-            st.subheader('_Đang chờ người dùng nhập file .csv. Hiện tại phần mềm đang sử dụng dữ liệu từ người dùng nhập tay ở trên._')
-            st.write(users_input_df)
+            pred.warning('Chết')
+        #pred.write(prediction[0])
+        proba.header('_Tỷ lệ sống của bệnh nhân_')
 
-        # IMPORT DATA
-        cad_raw = pd.read_csv('MIMIC3_CAD.csv')
-        #DRUG = [c_ for c_ in cad_raw if c_.startswith('DRUG')]  # drug for CAD
-        drop = ['hospital_expire_flag'] + ['hadm_id']
-        cad_step1 = cad_raw.drop(columns=drop,axis=1)
-        df_step1 = pd.concat([users_input_df, cad_step1], axis=0)
+        proba.success(f"{str(round(prediction_proba[0][0]*100,2))}%") #%
 
-        # ENCODE SOME FEATURES (GENDER, MARITAL, ETHINICITY,...?)
-        df_step1 = df_step1[:1]
+    #STEP2
+    with st.container():
+        st.text("")
+        st.title('Dự đoán thuốc tối ưu cho bệnh nhân')
+        pred2, proba2 = st.columns([1, 1])
 
-        # LOAD SAVED MODEL
-        load_clf = pickle.load(open('step1_clf.pkl', 'rb'))
-
-        # PREDICTION
-        prediction = load_clf.predict(df_step1)
-        prediction_proba = load_clf.predict_proba(df_step1)
-
-        with st.container():
-            st.warning("")
-            st.title('Dự đoán tỷ lệ sống của bệnh nhân')
-            pred, proba = st.columns([1, 1])
-
-            pred.header('_Tiên lượng của bệnh nhân_')
-            if prediction[0] == 0:
-                pred.success('Sống')
-            else:
-                pred.warning('Chết')
-            #pred.write(prediction[0])
-            proba.header('_Tỷ lệ sống của bệnh nhân_')
-
-            proba.success(f"{str(round(prediction_proba[0][0]*100,2))}%") #%
-
-        #STEP2
-        with st.container():
-            st.text("")
-            st.title('Dự đoán thuốc tối ưu cho bệnh nhân')
-            pred2, proba2 = st.columns([1, 1])
-
-            DRUG = [c_ for c_ in cad_raw if c_.startswith('DRUG')]  # drug for CAD
-            drop2 = ['hospital_expire_flag'] + ['hadm_id'] + DRUG
-            cad_step2 = cad_raw.drop(columns=drop2, axis=1)
-            df_step2 = pd.concat([users_input_df, cad_step2], axis=0)
-            df_step2 = df_step2.drop(DRUG,axis=1)
+        DRUG = [c_ for c_ in cad_raw if c_.startswith('DRUG')]  # drug for CAD
+        drop2 = ['hospital_expire_flag'] + ['hadm_id'] + DRUG
+        cad_step2 = cad_raw.drop(columns=drop2, axis=1)
+        df_step2 = pd.concat([users_input_df, cad_step2], axis=0)
+        df_step2 = df_step2.drop(DRUG,axis=1)
 
         # ENCODE SOME FEATURES (GENDER, MARITAL, ETHINICITY,...?)
-            df_step2 = df_step2[:1]
+        df_step2 = df_step2[:1]
 
         # LOAD SAVED MODEL
         load_clf2 = pickle.load(open('step2_clf.pkl', 'rb'))
